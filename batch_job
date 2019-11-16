@@ -11,13 +11,10 @@
 ##### Launch parallel job using srun
 module load openmpi/3.0.1
 module load pmix214/2.1.4
-export PMIX_MCA_pmix_gds_base_verbose=10
 for n in 1 2 4 8 16 32
 do
     printf 'Running with %.d processors \n' $n
     start=`date +%s%N`
-    #srun hostname -s | sort -n > slurm.hosts
-    #mpirun -np $n -machinefile slurm.hosts singularity exec openmpi.simg /opt/vecdot
     srun -n $n --mpi=pmix singularity exec openmpi.simg /opt/vecdot
     end=`date +%s%N`
     printf 'Time singularity: %.10f \n' $(((end-start)/1000000))
